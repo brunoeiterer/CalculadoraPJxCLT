@@ -1,0 +1,103 @@
+@page "/PJ"
+
+@inject IStringLocalizer<PJ> localizer;
+
+<MatHeadline4>@PJLabel</MatHeadline4>
+
+<MatCard style="main-mat-card">
+    <MatHeadline5>@salaryLabel</MatHeadline5>
+    <MatCardContent>
+        <div class="mat-card-content">
+            <MatTextField TValue="string" bind="@grossIncome" Label=@grossIncomeLabel Outlined="true" />
+            <MatTextField TValue="string" bind="@ownerSalary" Label=@ownerSalaryLabel Outlined="true" />
+        </div>
+    </MatCardContent>
+</MatCard>
+
+<MatCard style="main-mat-card">
+    <MatHeadline5>@costsLabel</MatHeadline5>
+    <MatCardContent>
+        <div class="mat-card-content">
+            <MatTextField TValue="string" bind="@accountantCost" Label=@accountantCostLabel Outlined="true" />
+        </div>
+    </MatCardContent>
+</MatCard>
+
+<MatCard style="main-mat-card">
+    <MatHeadline5>@taxesLabel</MatHeadline5>
+    <MatCardContent>
+        <div class="mat-card-content">
+            <MatTextField TValue="string" bind="@das" Label=@dasLabel ReadOnly="true" Outlined="true" />
+            <MatTextField TValue="string" bind="@irrf" Label=@irrfLabel ReadOnly="true" Outlined="true" />
+            <MatTextField TValue="string" bind="@gpsInss" Label=@gpsInssLabel ReadOnly="true" Outlined="true" />
+            <MatTextField TValue="string" bind="@siteInspectionTax" Label=@siteInspectionTaxLabel ReadOnly="true" Outlined="true" />
+        </div>
+    </MatCardContent>
+</MatCard>
+
+<MatCard style="main-mat-card">
+    <MatHeadline5>@rFactorLabel</MatHeadline5>
+    <MatCardContent>
+        <div class="mat-card-content">
+            <MatTextField TValue="string" bind="@rFactor" Label=@rFactorLabel ReadOnly="true" Outlined="true" />
+        </div>
+    </MatCardContent>
+</MatCard>
+
+<MatCard style="main-mat-card">
+    <MatHeadline5>@netIncomeLabel</MatHeadline5>
+    <MatCardContent>
+        <div class="mat-card-content">
+            <MatTextField TValue="string" bind="@monthlyNetIncome" Label=@monthlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField TValue="string" bind="@yearlyNetIncome" Label=@yearlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
+        </div>
+    </MatCardContent>
+</MatCard>
+
+@code {
+    private string grossIncomeLabel;
+    private string PJLabel;
+    private string salaryLabel;
+    private string ownerSalaryLabel;
+    private string costsLabel;
+    private string accountantCostLabel;
+    private string taxesLabel;
+    private string dasLabel;
+    private string irrfLabel;
+    private string gpsInssLabel;
+    private string siteInspectionTaxLabel;
+    private string rFactorLabel;
+    private string netIncomeLabel;
+    private string monthlyNetIncomeLabel;
+    private string yearlyNetIncomeLabel;
+
+    public double grossIncome { get; set; }
+    public double ownerSalary { get; set; }
+    public double accountantCost { get; set; }
+    public double das { get; set; }
+    public double irrf { get; set; }
+    public double gpsInss { get; set; }
+    public double siteInspectionTax { get; set; }
+    public double rFactor { get; set; }
+    public double monthlyNetIncome { get; set; }
+    public double yearlyNetIncome { get; set; }
+
+    protected override void OnInitialized()
+    {
+        PJLabel = localizer["PJ"];
+        salaryLabel = localizer["salary"];
+        grossIncomeLabel = localizer["grossIncome"];
+        ownerSalaryLabel = localizer["ownerSalary"];
+        costsLabel = localizer["costs"];
+        accountantCostLabel = localizer["accountantCosts"];
+        taxesLabel = localizer["taxes"];
+        dasLabel = localizer["das"];
+        irrfLabel = localizer["irrf"];
+        gpsInssLabel = localizer["gpsInss"];
+        siteInspectionTaxLabel = localizer["siteInspectionTax"];
+        rFactorLabel = localizer["rFactor"];
+        netIncomeLabel = localizer["netIncome"];
+        monthlyNetIncomeLabel = localizer["monthlyNetIncome"];
+        yearlyNetIncomeLabel = localizer["yearlyNetIncome"];
+    }
+}   
