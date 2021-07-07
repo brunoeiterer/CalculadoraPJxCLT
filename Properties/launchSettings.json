@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CalculadoraPJxCLT": {
+    "PJxCLTCalculator": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

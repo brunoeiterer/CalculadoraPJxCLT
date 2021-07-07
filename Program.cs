@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MatBlazor;
 
-namespace CalculadoraPJxCLT
+namespace PJxCLTCalculator
 {
     public class Program
     {

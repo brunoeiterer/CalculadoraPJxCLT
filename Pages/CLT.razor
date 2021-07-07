@@ -6,9 +6,10 @@
 
 <MatCard>
     <MatHeadline5>@salaryLabel</MatHeadline5>
+    
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@grossIncome" Label=@grossIncomeLabel Outlined="true"/>
+            <MatTextField Value="@grossIncome" OnInput="@(e => this.updateField(ref grossIncome, (ChangeEventArgs)e))" Label=@grossIncomeLabel Outlined="true"/>
         </div>
     </MatCardContent>
 </MatCard>
@@ -17,12 +18,12 @@
     <MatHeadline5>@benefitsLabel</MatHeadline5>
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@VR" Label=@VRLabel Outlined="true"/>
-            <MatTextField TValue="string" bind="@VA" Label=@VALabel Outlined="true"/>
-            <MatTextField TValue="string" bind="@healthInsurance" Label=@healthInsuranceLabel Outlined="true"/>
-            <MatTextField TValue="string" bind="@VT" Label=@VTLabel Outlined="true"/>
-            <MatTextField TValue="string" bind="@lifeInsurance" Label=@lifeInsuranceLabel Outlined="true"/>
-            <MatTextField TValue="string" bind="@PLR" Label=@PLRLabel Outlined="true"/>
+            <MatTextField Value="@VR" OnInput="@(e => this.updateField(ref VR, (ChangeEventArgs)e))" Label=@VRLabel Outlined="true"/>
+            <MatTextField Value="@VA" OnInput="@(e => this.updateField(ref VA, (ChangeEventArgs)e))" Label=@VALabel Outlined="true"/>
+            <MatTextField Value="@healthInsurance" OnInput="@(e => this.updateField(ref healthInsurance, (ChangeEventArgs)e))" Label=@healthInsuranceLabel Outlined="true"/>
+            <MatTextField Value="@VT" OnInput="@(e => this.updateField(ref VT, (ChangeEventArgs)e))" Label=@VTLabel Outlined="true"/>
+            <MatTextField Value="@lifeInsurance" OnInput="@(e => this.updateField(ref lifeInsurance, (ChangeEventArgs)e))" Label=@lifeInsuranceLabel Outlined="true"/>
+            <MatTextField Value="@PLR" OnInput="@(e => this.updateField(ref PLR, (ChangeEventArgs)e))" Label=@PLRLabel Outlined="true"/>
         </div>
     </MatCardContent>
 </MatCard>
@@ -31,9 +32,9 @@
     <MatHeadline5>@lawBenefitsLabel</MatHeadline5>
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@FGTS" Label=@FGTSLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField TValue="string" bind="@thirteenthSalary" Label=@thirteenthSalaryLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField TValue="string" bind="@paidVacation" Label=@paidVacationLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@FGTS" Label=@FGTSLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@thirteenthSalary" Label=@thirteenthSalaryLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@paidVacation" Label=@paidVacationLabel ReadOnly="true" Outlined="true"/>
         </div>
     </MatCardContent>
 </MatCard>
@@ -42,8 +43,8 @@
     <MatHeadline5>@taxesLabel</MatHeadline5>
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@IRRF" Label=@IRRFLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField TValue="string" bind="@INSS" Label=@INSSLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@IRRF" Label=@IRRFLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@INSS" Label=@INSSLabel ReadOnly="true" Outlined="true"/>
         </div>
     </MatCardContent>
 </MatCard>
@@ -52,8 +53,8 @@
     <MatHeadline5>@netIncomeLabel</MatHeadline5>
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@monthlyNetIncome" Label=@monthlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField TValue="string" bind="@yearlyNetIncome" Label=@yearlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@monthlyNetIncome" Label=@monthlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@yearlyNetIncome" Label=@yearlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
         </div>
     </MatCardContent>
 </MatCard>
@@ -80,20 +81,20 @@
     private string monthlyNetIncomeLabel;
     private string yearlyNetIncomeLabel;
 
-    public double grossIncome { get; set; }
-    public double VR { get; set; }
-    public double VA { get; set; }
-    public double healthInsurance { get; set; }
-    public double VT { get; set; }
-    public double lifeInsurance { get; set; }
-    public double PLR { get; set; }
-    public double FGTS { get; set; }
-    public double thirteenthSalary { get; set; }
-    public double paidVacation { get; set; }
-    public double IRRF { get; set; }
-    public double INSS { get; set; }
-    public double monthlyNetIncome { get; set; }
-    public double yearlyNetIncome { get; set; }
+    private double grossIncome;
+    private double VR;
+    private double VA;
+    private double healthInsurance;
+    private double VT;
+    private double lifeInsurance;
+    private double PLR;
+    private double FGTS;
+    private double thirteenthSalary;
+    private double paidVacation;
+    private double IRRF;
+    private double INSS ;
+    private double monthlyNetIncome;
+    private double yearlyNetIncome;
 
     protected override void OnInitialized()
     {
@@ -117,5 +118,47 @@
         netIncomeLabel = localizer["netIncome"];
         monthlyNetIncomeLabel = localizer["monthlyNetIncome"];
         yearlyNetIncomeLabel = localizer["yearlyNetIncome"];
+    }
+
+    private void updateField(ref double field, ChangeEventArgs eventArgs) {
+        try {
+            field = (double)Convert.ToDecimal(eventArgs.Value);
+        }
+        catch (Exception e) {
+           if(e is InvalidCastException || e is FormatException) {
+               field = 0;
+               return;
+           }
+
+           throw;
+        }
+        finally {
+            this.calculateLawBenefits();
+            this.calculateTaxes();
+            this.calculateNetIncome();
+        }
+    }
+
+    private void calculateLawBenefits() {
+        FGTSCalculator fgtsCalculator = new FGTSCalculator();
+        this.FGTS = fgtsCalculator.calculateFGTS(grossIncome);
+
+        ThirteenthSalaryCalculator thirteenthSalaryCalculator = new ThirteenthSalaryCalculator();
+        this.thirteenthSalary = thirteenthSalaryCalculator.calculateThirteenthSalary(this.grossIncome);
+
+        PaidVacationCalculator paidVacationCalculator = new PaidVacationCalculator();
+        this.paidVacation = paidVacationCalculator.calculatePaidVacation(this.grossIncome);
+    }
+
+    private void calculateTaxes() {
+        IncomeTaxCalculator incomeTaxCalculator = new IncomeTaxCalculator();
+        this.IRRF = incomeTaxCalculator.calculateIRRF(this.grossIncome);
+        this.INSS = incomeTaxCalculator.calculateINSS(this.grossIncome);
+    }
+
+    private void calculateNetIncome() {
+        this.yearlyNetIncome = ((grossIncome+ FGTS) * 11) + ((VR + VA + healthInsurance + VT + lifeInsurance ) * 12) 
+            + (PLR * grossIncome) + FGTS + thirteenthSalary + paidVacation - (this.IRRF * 11) - (this.INSS * 11);
+        this.monthlyNetIncome = yearlyNetIncome / 12;
     }
 }
