@@ -1,13 +1,16 @@
 namespace PJxCLTCalculator {
     public class IncomeTaxCalculator {
-        private const double INSSFirstBracket = 1751.81;
-        private const double INSSSecondBracket = 2919.72;
-        private const double INSSThirdBracket = 5839.45;
+        private const double INSSFirstBracket = 1100;
+        private const double INSSSecondBracket = 2203.48;
+        private const double INSSThirdBracket = 3305.22;
+        private const double INSSFourthBracket = 6433.57;
 
-        private const double INSSFirstBracketAliquot = 0.08;
+        private const double INSSFirstBracketAliquot = 0.075;
         private const double INSSSencondBracketAliquot = 0.09;
-        private const double INSSThirdBracketAliquot = 0.11;
-        private const double INSSFourthBracketValue = 642.34;
+        private const double INSSThirdBracketAliquot = 0.12;
+        private const double INSSFourthBracketAliquot = 0.14;
+
+        private const double INSSOwnerSalaryAliquot = 0.11;
 
         private const double IRRFFirstBracket = 1903.98;
         private const double IRRFSecondBracket = 2826.65;
@@ -25,35 +28,66 @@ namespace PJxCLTCalculator {
         private const double IRRFFifthBracketAliquot = 0.275;
 
         public double calculateINSS(double grossIncome) {
-            if(grossIncome <= INSSFirstBracket) {
-                return grossIncome * INSSFirstBracketAliquot;
-            }
-            else if(grossIncome <= INSSSecondBracket) {
-                return grossIncome * INSSSencondBracketAliquot;
-            }
-            else if(grossIncome <= INSSThirdBracket) {
-                return grossIncome * INSSThirdBracketAliquot;
+            double INSS = 0;
+            double rest = grossIncome - INSSFirstBracket;
+            if(rest > 0) {
+                INSS += INSSFirstBracket * INSSFirstBracketAliquot; 
             }
             else {
-                return INSSFourthBracketValue;
+                INSS += grossIncome * INSSFirstBracketAliquot;
+                return INSS;
             }
+
+            rest -= INSSSecondBracket - INSSFirstBracket;
+            if(rest > 0) {
+                INSS += (INSSSecondBracket - INSSFirstBracket) * INSSSencondBracketAliquot;
+            }
+            else {
+                INSS += (rest + (INSSSecondBracket - INSSFirstBracket)) * INSSSencondBracketAliquot;
+                return INSS;
+            }
+
+            rest -= INSSThirdBracket - INSSSecondBracket;
+            if(rest > 0) {
+                INSS += (INSSThirdBracket - INSSSecondBracket) * INSSThirdBracketAliquot;
+            }
+            else {
+                INSS += (rest + (INSSThirdBracket - INSSSecondBracket)) * INSSThirdBracketAliquot;
+                return INSS;
+            }
+
+            rest -= INSSFourthBracket - INSSThirdBracket;
+            if(rest > 0) {
+                INSS += (INSSFourthBracket - INSSThirdBracket) * INSSFourthBracketAliquot;
+            }
+            else {
+                INSS += (rest + (INSSFourthBracket - INSSThirdBracket)) * INSSFourthBracketAliquot;
+            }
+
+            return INSS;
         }
 
-        public double calculateIRRF(double grossIncome) {
+        public double calculateOwnerSalaryINSS(double grossIncome) {
+            return grossIncome * INSSOwnerSalaryAliquot;
+        }
+
+        public double calculateIRRF(double grossIncome, double INSS) {
+            grossIncome -= INSS;
+
             if(grossIncome <= IRRFFirstBracket) {
                 return 0;
             }
             else if(grossIncome <= IRRFSecondBracket) {
-                return (grossIncome - IRRFSecondBracketDeductible) * IRRFSecondBracketAliquot;
+                return (grossIncome * IRRFSecondBracketAliquot) - IRRFSecondBracketDeductible;
             }
             else if(grossIncome <= IRRFThirdBracket) {
-                return (grossIncome - IRRFThirdBracketDeductible) * IRRFThirdBracketAliquot;
+                return (grossIncome * IRRFThirdBracketAliquot) - IRRFThirdBracketDeductible;
             }
             else if(grossIncome <= IRRFFourthBracket) {
-                return (grossIncome - IRRFFourthBracketDeductible) * IRRFFourthBracketAliquot;
+                return (grossIncome * IRRFFourthBracketAliquot) - IRRFFourthBracketDeductible;
             }
             else {
-                return (grossIncome - IRRFFifthBracketDeductible) * IRRFFifthBracketAliquot;
+                return (grossIncome * IRRFFifthBracketAliquot) - IRRFFifthBracketDeductible;
             }
         }
     }

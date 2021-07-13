@@ -8,8 +8,8 @@
     <MatHeadline5>@salaryLabel</MatHeadline5>
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@grossIncome" Label=@grossIncomeLabel Outlined="true" />
-            <MatTextField TValue="string" bind="@ownerSalary" Label=@ownerSalaryLabel Outlined="true" />
+            <MatTextField Value="@grossIncome" OnInput="@(e => this.updateField(ref grossIncome, (ChangeEventArgs)e))" Label=@grossIncomeLabel Outlined="true" />
+            <MatTextField Value="@ownerSalary" OnInput="@(e => this.updateField(ref ownerSalary, (ChangeEventArgs)e))" Label=@ownerSalaryLabel Outlined="true" />
         </div>
     </MatCardContent>
 </MatCard>
@@ -18,19 +18,7 @@
     <MatHeadline5>@costsLabel</MatHeadline5>
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@accountantCost" Label=@accountantCostLabel Outlined="true" />
-        </div>
-    </MatCardContent>
-</MatCard>
-
-<MatCard style="main-mat-card">
-    <MatHeadline5>@taxesLabel</MatHeadline5>
-    <MatCardContent>
-        <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@das" Label=@dasLabel ReadOnly="true" Outlined="true" />
-            <MatTextField TValue="string" bind="@irrf" Label=@irrfLabel ReadOnly="true" Outlined="true" />
-            <MatTextField TValue="string" bind="@gpsInss" Label=@gpsInssLabel ReadOnly="true" Outlined="true" />
-            <MatTextField TValue="string" bind="@siteInspectionTax" Label=@siteInspectionTaxLabel ReadOnly="true" Outlined="true" />
+            <MatTextField Value="@accountantCost" OnInput="@(e => this.updateField(ref accountantCost, (ChangeEventArgs)e))" Label=@accountantCostLabel Outlined="true" />
         </div>
     </MatCardContent>
 </MatCard>
@@ -39,7 +27,20 @@
     <MatHeadline5>@rFactorLabel</MatHeadline5>
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@rFactor" Label=@rFactorLabel ReadOnly="true" Outlined="true" />
+            <MatTextField Value="@annex" OnInput="@(e => this.updateField(ref annex, (ChangeEventArgs)e))" Label=@annexLabel Outlined="true"  />
+            <MatTextField @bind-Value="@rFactor" Label=@rFactorLabel ReadOnly="true" Outlined="true" />
+        </div>
+    </MatCardContent>
+</MatCard>
+
+<MatCard style="main-mat-card">
+    <MatHeadline5>@taxesLabel</MatHeadline5>
+    <MatCardContent>
+        <div class="mat-card-content">
+            <MatTextField @bind-Value="@DAS" Label=@dasLabel ReadOnly="true" Outlined="true" />
+            <MatTextField @bind-Value="@IRRF" Label=@irrfLabel ReadOnly="true" Outlined="true" />
+            <MatTextField @bind-Value="@gpsINSS" Label=@gpsInssLabel ReadOnly="true" Outlined="true" />
+            <MatTextField Value="@siteInspectionTax" OnInput="@(e => this.updateField(ref siteInspectionTax, (ChangeEventArgs)e))" Label=@siteInspectionTaxLabel Outlined="true" />
         </div>
     </MatCardContent>
 </MatCard>
@@ -48,8 +49,8 @@
     <MatHeadline5>@netIncomeLabel</MatHeadline5>
     <MatCardContent>
         <div class="mat-card-content">
-            <MatTextField TValue="string" bind="@monthlyNetIncome" Label=@monthlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField TValue="string" bind="@yearlyNetIncome" Label=@yearlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@monthlyNetIncome" Label=@monthlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
+            <MatTextField @bind-Value="@yearlyNetIncome" Label=@yearlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
         </div>
     </MatCardContent>
 </MatCard>
@@ -66,21 +67,23 @@
     private string irrfLabel;
     private string gpsInssLabel;
     private string siteInspectionTaxLabel;
+    private string annexLabel;
     private string rFactorLabel;
     private string netIncomeLabel;
     private string monthlyNetIncomeLabel;
     private string yearlyNetIncomeLabel;
 
-    public double grossIncome { get; set; }
-    public double ownerSalary { get; set; }
-    public double accountantCost { get; set; }
-    public double das { get; set; }
-    public double irrf { get; set; }
-    public double gpsInss { get; set; }
-    public double siteInspectionTax { get; set; }
-    public double rFactor { get; set; }
-    public double monthlyNetIncome { get; set; }
-    public double yearlyNetIncome { get; set; }
+    private double grossIncome;
+    private double ownerSalary;
+    private double accountantCost;
+    private double DAS;
+    private double IRRF;
+    private double gpsINSS;
+    private double siteInspectionTax;
+    private int annex;
+    private double rFactor;
+    private double monthlyNetIncome;
+    private double yearlyNetIncome;
 
     protected override void OnInitialized()
     {
@@ -95,9 +98,67 @@
         irrfLabel = localizer["irrf"];
         gpsInssLabel = localizer["gpsInss"];
         siteInspectionTaxLabel = localizer["siteInspectionTax"];
+        annexLabel = localizer["annex"];
         rFactorLabel = localizer["rFactor"];
         netIncomeLabel = localizer["netIncome"];
         monthlyNetIncomeLabel = localizer["monthlyNetIncome"];
         yearlyNetIncomeLabel = localizer["yearlyNetIncome"];
+
+        annex = 1;
+    }
+
+    private void updateField(ref double field, ChangeEventArgs eventArgs) {
+        try {
+            field = (double)Convert.ToDecimal(eventArgs.Value);
+        }
+        catch (Exception e) {
+           if(e is InvalidCastException || e is FormatException) {
+               field = 0;
+               return;
+           }
+
+           throw;
+        }
+        finally {
+            this.calculateTaxes();
+            this.calculateNetIncome();
+        }
+    }
+
+    private void updateField(ref int field, ChangeEventArgs eventArgs) {
+        try {
+            Console.WriteLine("eventArgs.Value: " + eventArgs.Value);
+            field = (int)Convert.ToInt16(eventArgs.Value);
+        }
+        catch (Exception e) {
+           if(e is InvalidCastException || e is FormatException) {
+               field = 1;
+               return;
+           }
+
+           throw;
+        }
+        finally {
+            this.calculateTaxes();
+            this.calculateNetIncome();
+        }
+    }
+
+    private void calculateTaxes() {
+        RFactorCalculator rFactorCalculator = new RFactorCalculator();
+        this.rFactor = rFactorCalculator.calculateRFactor(this.grossIncome, this.ownerSalary);
+
+        DASCalculator dasCalulator = new DASCalculator();
+        this.DAS = dasCalulator.calculateDAS(this.grossIncome, this.rFactor, this.annex);
+
+        IncomeTaxCalculator incomeTaxCalculator = new IncomeTaxCalculator();
+        this.gpsINSS = incomeTaxCalculator.calculateOwnerSalaryINSS(this.ownerSalary);
+        this.IRRF = incomeTaxCalculator.calculateIRRF(this.ownerSalary, this.gpsINSS);
+    }
+
+    private void calculateNetIncome() {
+        this.monthlyNetIncome = grossIncome - this.IRRF - this.gpsINSS - this.DAS - (this.siteInspectionTax / 12) - this.accountantCost;
+        this.yearlyNetIncome = this.monthlyNetIncome * 12;
+        
     }
 }   

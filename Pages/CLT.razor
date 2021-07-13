@@ -152,8 +152,8 @@
 
     private void calculateTaxes() {
         IncomeTaxCalculator incomeTaxCalculator = new IncomeTaxCalculator();
-        this.IRRF = incomeTaxCalculator.calculateIRRF(this.grossIncome);
         this.INSS = incomeTaxCalculator.calculateINSS(this.grossIncome);
+        this.IRRF = incomeTaxCalculator.calculateIRRF(this.grossIncome, this.INSS);
     }
 
     private void calculateNetIncome() {

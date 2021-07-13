@@ -177,4 +177,8 @@
     <value>TFE</value>
     <comment/>
   </data>
+  <data name="annex" xml:space="preserve">
+    <value>Anexo</value>
+    <comment/>
+  </data>
 </root>
