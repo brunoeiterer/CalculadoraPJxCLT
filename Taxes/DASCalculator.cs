@@ -62,7 +62,7 @@ namespace PJxCLTCalculator {
         }
 
         public double calculateDAS(double grossIncome, double rFactor, int annex) {
-            if(annex == 5 && rFactor >= 28) {
+            if(annex == 5 && rFactor >= 0.28) {
                 annex = 3;
             }
 
