@@ -4,60 +4,49 @@
 
 <MatHeadline4>@CLTLabel</MatHeadline4>
 
-<MatCard>
+<div>
     <MatHeadline5>@salaryLabel</MatHeadline5>
-    
-    <MatCardContent>
-        <div class="mat-card-content">
+        <div>
             <MatTextField Value="@grossIncome" OnInput="@(e => this.updateField(ref grossIncome, (ChangeEventArgs)e))" Label=@grossIncomeLabel Outlined="true"/>
         </div>
-    </MatCardContent>
-</MatCard>
+</div>
 
-<MatCard>
+<div>
     <MatHeadline5>@benefitsLabel</MatHeadline5>
-    <MatCardContent>
-        <div class="mat-card-content">
-            <MatTextField Value="@VR" OnInput="@(e => this.updateField(ref VR, (ChangeEventArgs)e))" Label=@VRLabel Outlined="true"/>
-            <MatTextField Value="@VA" OnInput="@(e => this.updateField(ref VA, (ChangeEventArgs)e))" Label=@VALabel Outlined="true"/>
-            <MatTextField Value="@healthInsurance" OnInput="@(e => this.updateField(ref healthInsurance, (ChangeEventArgs)e))" Label=@healthInsuranceLabel Outlined="true"/>
-            <MatTextField Value="@VT" OnInput="@(e => this.updateField(ref VT, (ChangeEventArgs)e))" Label=@VTLabel Outlined="true"/>
-            <MatTextField Value="@lifeInsurance" OnInput="@(e => this.updateField(ref lifeInsurance, (ChangeEventArgs)e))" Label=@lifeInsuranceLabel Outlined="true"/>
-            <MatTextField Value="@PLR" OnInput="@(e => this.updateField(ref PLR, (ChangeEventArgs)e))" Label=@PLRLabel Outlined="true"/>
-        </div>
-    </MatCardContent>
-</MatCard>
+    <div>
+        <MatTextField Value="@VR" OnInput="@(e => this.updateField(ref VR, (ChangeEventArgs)e))" Label=@VRLabel Outlined="true"/>
+        <MatTextField Value="@VA" OnInput="@(e => this.updateField(ref VA, (ChangeEventArgs)e))" Label=@VALabel Outlined="true"/>
+        <MatTextField Value="@healthInsurance" OnInput="@(e => this.updateField(ref healthInsurance, (ChangeEventArgs)e))" Label=@healthInsuranceLabel Outlined="true"/>
+        <MatTextField Value="@VT" OnInput="@(e => this.updateField(ref VT, (ChangeEventArgs)e))" Label=@VTLabel Outlined="true"/>
+        <MatTextField Value="@lifeInsurance" OnInput="@(e => this.updateField(ref lifeInsurance, (ChangeEventArgs)e))" Label=@lifeInsuranceLabel Outlined="true"/>
+        <MatTextField Value="@PLR" OnInput="@(e => this.updateField(ref PLR, (ChangeEventArgs)e))" Label=@PLRLabel Outlined="true"/>
+    </div>
+</div>
 
-<MatCard>
+<div>
     <MatHeadline5>@lawBenefitsLabel</MatHeadline5>
-    <MatCardContent>
-        <div class="mat-card-content">
-            <MatTextField @bind-Value="@FGTS" Label=@FGTSLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField @bind-Value="@thirteenthSalary" Label=@thirteenthSalaryLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField @bind-Value="@paidVacation" Label=@paidVacationLabel ReadOnly="true" Outlined="true"/>
-        </div>
-    </MatCardContent>
-</MatCard>
+    <div>
+        <MatTextField @bind-Value="@FGTS" Label=@FGTSLabel ReadOnly="true" Outlined="true"/>
+        <MatTextField @bind-Value="@thirteenthSalary" Label=@thirteenthSalaryLabel ReadOnly="true" Outlined="true"/>
+        <MatTextField @bind-Value="@paidVacation" Label=@paidVacationLabel ReadOnly="true" Outlined="true"/>
+    </div>
+</div>
 
-<MatCard>
+<div>
     <MatHeadline5>@taxesLabel</MatHeadline5>
-    <MatCardContent>
-        <div class="mat-card-content">
-            <MatTextField @bind-Value="@IRRF" Label=@IRRFLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField @bind-Value="@INSS" Label=@INSSLabel ReadOnly="true" Outlined="true"/>
-        </div>
-    </MatCardContent>
-</MatCard>
+    <div>
+        <MatTextField @bind-Value="@IRRF" Label=@IRRFLabel ReadOnly="true" Outlined="true"/>
+        <MatTextField @bind-Value="@INSS" Label=@INSSLabel ReadOnly="true" Outlined="true"/>
+    </div>
+</div>
 
-<MatCard>
+<div>
     <MatHeadline5>@netIncomeLabel</MatHeadline5>
-    <MatCardContent>
-        <div class="mat-card-content">
-            <MatTextField @bind-Value="@monthlyNetIncome" Label=@monthlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
-            <MatTextField @bind-Value="@yearlyNetIncome" Label=@yearlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
-        </div>
-    </MatCardContent>
-</MatCard>
+    <div>
+        <MatTextField @bind-Value="@monthlyNetIncome" Label=@monthlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
+        <MatTextField @bind-Value="@yearlyNetIncome" Label=@yearlyNetIncomeLabel ReadOnly="true" Outlined="true"/>
+    </div>
+</div>
 
 @code {
     private string grossIncomeLabel;
