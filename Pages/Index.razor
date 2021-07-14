@@ -1,12 +1,41 @@
 ﻿@page "/"
 
+@inject IStringLocalizer<Index> localizer;
+
 <div class="mat-layout-grid">
-    <div class="mat-layout-grid-inner" Spacing="10">
-        <div class="mat-layout-grid-cell" style="mat-layout-grid-cell-span-$(6)-$(desktop)">
-            <CLT></CLT>
+    <div class="mat-layout-grid-inner">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
+            <MatNavMenu>
+                <MatNavItem OnClick="() => { showCalculator = true; showAbout = false; }">
+                    <MatIcon Icon="home" />&nbsp;@homeLabel
+                </MatNavItem>
+                <MatNavItem OnClick="() => { showCalculator = false; showAbout = true; }">
+                    <MatIcon Icon="help" />&nbsp;@aboutLabel
+                </MatNavItem>
+            </MatNavMenu>
         </div>
-        <div class="mat-layout-grid-cell" style="mat-layout-grid-cell-span-$(6)-$(desktop)">
-            <PJ></PJ>
-        </div>
+        @if (showCalculator) {
+            <Calculator></Calculator>
+        }
+        @if (showAbout) {
+            <About></About>
+        }
+        
     </div>
 </div>
+
+@code {
+    private string homeLabel;
+    private string aboutLabel;
+
+    private bool showCalculator;
+    private bool showAbout;
+
+    protected override void OnInitialized() {
+        homeLabel = localizer["home"];
+        aboutLabel = localizer["about"];
+
+        showCalculator = true;
+        showAbout = false;
+    }
+}
